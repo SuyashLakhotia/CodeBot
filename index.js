@@ -84,7 +84,7 @@ io.on('connection', function(socket) {
                             returnMessage = '';
 
                             if (possibleWords.length > 0) {
-                                returnMessage += 'Did you mean ';
+                                returnMessage += 'Did you mean the keyword ';
                                 for (var i = 0; i < possibleWords.length; i++) {
                                     if (i != 0) {
                                         returnMessage += ', ';
@@ -146,6 +146,8 @@ io.on('connection', function(socket) {
                                 var value = errorDescription.substring(errorDescription.lastIndexOf(' '), errorDescription.length);
                                 returnMessages.push('Cannot convert ' + value + ' to ' + datatypes[0] + '.');
                             }
+                        } else {
+                            returnMessages.push('Hmm...your code isn\'t working but I\'m not sure why. ☹️');
                         }
                     } else {
                         returnMessages.push('Hmm...your code isn\'t working but I\'m not sure why. ☹️');
