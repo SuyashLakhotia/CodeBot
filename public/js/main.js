@@ -22,12 +22,12 @@ socket.on('message', function(msg) {
 });
 
 socket.on('codeReview', function(boolean) {
-    var num = Math.floor(Math.random() * 3) + 1;
+    var num = Math.floor(Math.random() * 4) + 1;
 
     if (boolean) {
-        $('.chat table').append('<tr><td class="bubble you"><img src="/assets/win' + num + '.gif" width="400px" height="auto"></td></tr>');
+        $('.chat table').append('<tr><td class="bubble you"><img src="/assets/win' + num + '.gif" width="350px" height="auto"></td></tr>');
     } else {
-        $('.chat table').append('<tr><td class="bubble you"><img src="/assets/sad' + num + '.gif" width="400px" height="auto"></td></tr>');
+        $('.chat table').append('<tr><td class="bubble you"><img src="/assets/sad' + num + '.gif" width="350px" height="auto"></td></tr>');
     }
     
     setTimeout(function() {
