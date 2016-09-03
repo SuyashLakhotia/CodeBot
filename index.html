@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CodeBot Chat</title>
+    <link rel="stylesheet" href="main.css" type="text/css">
+    <link rel="icon" href="/favicon.ico">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="/main.js"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="chat" id="chatBox">
+                <div class="conversation-start">
+                    <span></span>
+                </div>
+                <table>
+                    <tr>
+                        <td class="bubble you">
+                            Hi, I'm CodeBot!
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bubble you">
+                            I'll be your guide in learning Python today!
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bubble me">
+                            Hi, CodeBot!
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="bubble you">
+                            What's your name?
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="write">
+                <input type="text" id="messageBox" onkeypress="keyEnter(event);" />
+                <a href="javascript:sendMessage();" class="write-link send-icon"></a>
+                <a href="javascript:codeModal();" class="write-link code-icon">&lt;/&gt;</a>
+            </div>
+        </div>
+    </div>
+    <div id="codeModal" class="modal">
+        <div class="modal-content">
+            <textarea class="code" id="codeBox" autofocus="autofocus" rows="10"></textarea>
+            <a class="button" id="submitBtn">Submit</a>
+            <a class="button" id="closeBtn">Cancel</a>
+        </div>
+    </div>
+</body>
+
+</html>
