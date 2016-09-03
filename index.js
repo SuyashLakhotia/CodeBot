@@ -11,12 +11,19 @@ app.get('/', function(req, res) {
 
 io.on('connection', function(socket) {
     console.log('User Connected');
+
     socket.on('disconnect', function() {
         console.log('User Disconnected');
     });
+
     socket.on('message', function(msg) {
         io.emit('message', '< Message from CodeBot >');
     });
+
+    socket.on('code', function(code) {
+    	var randomFlag = Math.random() >= 0.5;
+    	io.emit('code', randomFlag);
+    })
 });
 
 http.listen(3000, function() {
