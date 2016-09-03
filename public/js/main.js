@@ -1,7 +1,7 @@
 var socket = io();
 
 function keyEnter(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
         sendMessage();
     }
 }
@@ -33,7 +33,7 @@ function codeModal() {
     document.getElementById('submitBtn').onclick = function() {
         if ($('#codeBox').val() != '') {
             socket.emit('message', $('#codeBox').val());
-            var html = '<tr><td class="bubble me code">' + $('#codeBox').val().replace(/\n/g, '<br>').replace(' ', '&nbsp;') + '</td></tr>';
+            var html = '<tr><td class="bubble me code">' + $('#codeBox').val().replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') + '</td></tr>';
             $('.chat table').append(html);
             $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
             $('#codeBox').val('');
@@ -52,4 +52,17 @@ function codeModal() {
 
 $(document).ready(function() {
     $('.conversation-start span').html(new Date);
-})
+
+    $('#codeBox').on('keydown', function(e) {
+        if (e.keyCode === 9) {
+            e.preventDefault();
+
+            var start = $(this).get(0).selectionStart;
+            var end = $(this).get(0).selectionEnd;
+
+            $(this).val($(this).val().substring(0, start) + '  ' + $(this).val().substring(end));
+
+            $(this).get(0).selectionStart = $(this).get(0).selectionEnd = start + 2;
+        }
+    });
+});
