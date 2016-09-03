@@ -22,7 +22,7 @@ io.on('connection', function(socket) {
 
     socket.on('code', function(code) {
     	var randomFlag = Math.random() >= 0.5;
-    	io.emit('code', randomFlag);
+    	io.emit('codeReview', randomFlag);
     })
 });
 

@@ -21,7 +21,7 @@ socket.on('message', function(msg) {
     $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 });
 
-socket.on('code', function(boolean) {
+socket.on('codeReview', function(boolean) {
     var num = Math.floor(Math.random() * 3) + 1;
 
     if (boolean) {
