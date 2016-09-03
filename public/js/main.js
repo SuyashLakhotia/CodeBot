@@ -47,7 +47,7 @@ function codeModal() {
     document.getElementById('submitBtn').onclick = function() {
         if ($('#codeBox').val() != '') {
             socket.emit('code', $('#codeBox').val());
-            var html = '<tr><td class="bubble me code">' + $('#codeBox').val().replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') + '</td></tr>';
+            var html = '<tr><td class="bubble me code">' + $('#codeBox').val().replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') + '</td></tr>';
             $('.chat table').append(html);
             $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
             $('#codeBox').val('');
