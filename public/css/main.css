@@ -145,7 +145,7 @@ body {
 }
 
 .bubble.me.code:before {
-    background-color: #222;
+    background-color: #212121;
 }
 
 .bubble {
@@ -250,7 +250,7 @@ body {
 .code {
     font-family: 'Cutive Mono', 'Courier New', 'Courier', sans-serif;
     font-size: 16px;
-    background-color: #222 !important;
+    background-color: #212121 !important;
     color: #fff !important;
 }
 
@@ -326,6 +326,7 @@ body {
 .modal textarea {
     width: 100%;
     margin-bottom: 10px;
+    resize: vertical;
 }
 
 .modal .close {
