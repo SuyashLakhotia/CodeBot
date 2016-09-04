@@ -254,6 +254,12 @@ body {
     color: #fff !important;
 }
 
+span.code {
+    background-color: #eceff1 !important;
+    color: #000 !important;
+    padding: 2px;
+}
+
 .write {
     position: absolute;
     bottom: 8px;
