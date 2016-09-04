@@ -1,30 +1,99 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var express = require('express'),
+    app = express(),
+    http = require('http').Server(app),
+    io = require('socket.io')(http);
 
-var PythonShell = require('python-shell');
-var fs = require('fs');
+var MongoClient = require('mongodb').MongoClient,
+    assert = require('assert');
 
-var pythonDict = require('./pythonDict');
-var lev = require('./levenshtein');
-
-app.use(express.static('public'));
-
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+var collection = {};
+var url = 'mongodb://localhost:27017/CodeBot';
 
 io.on('connection', function(socket) {
     console.log('User Connected');
+    io.emit('message', 'Hello, world! I\'m CodeBot!');
+    io.emit('message', '^ Programming joke, lol.');
+    io.emit('message', 'Welcome on your first step to becoming a programmer.');
+    io.emit('message', 'Today, we\'ll be learning how to code in Python! Are you ready to begin?');
 
-    socket.on('disconnect', function() {
-        console.log('User Disconnected');
+    MongoClient.connect(url, function(err, db) {
+        assert.equal(null, err);
+        console.log('Connected to MongoDB');
+        db.collection('Curriculum').find({}).toArray(function(err, result) {
+            if (err) {
+                console.log(err);
+            } else if (result.length) {
+                console.log('Found: ', result);
+                collection = result[0];
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+            }
+        });
     });
+
+    var exercise = 0;
+    var expectedOutput = [];
+    var startFlag = true;
 
     socket.on('message', function(msg) {
-        io.emit('message', '< Message from CodeBot >');
+        if (startFlag && (msg == 'yes' || msg == 'Yes' || msg == 'Yeap' || msg == 'yeap')) {
+            io.emit('message', 'Alright, let\'s go!');
+
+            io.emit('message', 'Unit: <strong>' + collection.collectionContent[0].unitName + '</strong>');
+            io.emit('message', 'Topic: ' + collection.collectionContent[0].unitContent[0].subunitName);
+            io.emit('message', 'Let\'s look at ' + collection.collectionContent[0].unitContent[0].subunitContent[0].exerciseName + '!');
+            io.emit('message', collection.collectionContent[0].unitContent[0].subunitContent[0].exerciseContent.instructions.replace(/\n/g, '<br>'));
+            io.emit('message', 'Example:<br> <span class="code">' + collection.collectionContent[0].unitContent[0].subunitContent[0].exerciseContent.exampleCode.replace(/\n/g, '<br>') + '</span>');
+            io.emit('codeStub', collection.collectionContent[0].unitContent[0].subunitContent[0].exerciseContent.codeStub);
+            expectedOutput = collection.collectionContent[0].unitContent[0].subunitContent[0].exerciseContent.expectedOutput.split('\n');
+        } else if (startFlag) {
+            io.emit('message', 'Alright, send me a "Yes" later when you\'re ready!');
+        } else {
+            
+        }
     });
+
+    function nextExercise() {
+        expectedOutput = [];
+
+        switch (exercise) {
+            case 1:
+            case 2:
+                io.emit('message', 'Let\'s look at ' + collection.collectionContent[0].unitContent[0].subunitContent[exercise].exerciseName + '!');
+                io.emit('message', collection.collectionContent[0].unitContent[0].subunitContent[exercise].exerciseContent.instructions.replace(/\n/g, '<br>'));
+                io.emit('message', 'Example:<br> <span class="code">' + collection.collectionContent[0].unitContent[0].subunitContent[exercise].exerciseContent.exampleCode.replace(/\n/g, '<br>') + '</span>');
+                io.emit('codeStub', collection.collectionContent[0].unitContent[0].subunitContent[exercise].exerciseContent.codeStub);
+                expectedOutput = collection.collectionContent[0].unitContent[0].subunitContent[exercise].exerciseContent.expectedOutput.split('\n');
+                break;
+            case 3:
+                io.emit('message', 'Topic: ' + collection.collectionContent[0].unitContent[1].subunitName);
+                io.emit('message', 'Let\'s look at ' + collection.collectionContent[0].unitContent[1].subunitContent[0].exerciseName + '!');
+                io.emit('message', collection.collectionContent[0].unitContent[1].subunitContent[0].exerciseContent.instructions.replace(/\n/g, '<br>'));
+                io.emit('message', 'Example:<br> <span class="code">' + collection.collectionContent[0].unitContent[1].subunitContent[0].exerciseContent.exampleCode.replace(/\n/g, '<br>') + '</span>');
+                io.emit('codeStub', collection.collectionContent[0].unitContent[1].subunitContent[0].exerciseContent.codeStub);
+                expectedOutput = collection.collectionContent[0].unitContent[1].subunitContent[0].exerciseContent.expectedOutput.split('\n');
+                break;
+            case 4:
+            case 5:
+            case 6:
+                io.emit('message', 'Unit: <strong>' + collection.collectionContent[1].unitName + '</strong>');
+                io.emit('message', 'Topic: ' + collection.collectionContent[1].unitContent[0].subunitName);
+                io.emit('message', 'Let\'s look at ' + collection.collectionContent[1].unitContent[0].subunitContent[exercise - 4].exerciseName + '!');
+                io.emit('message', collection.collectionContent[1].unitContent[0].subunitContent[exercise - 4].exerciseContent.instructions.replace(/\n/g, '<br>'));
+                io.emit('message', 'Example:<br> <span class="code">' + collection.collectionContent[1].unitContent[0].subunitContent[exercise - 4].exerciseContent.exampleCode.replace(/\n/g, '<br>') + '</span>');
+                io.emit('codeStub', collection.collectionContent[1].unitContent[0].subunitContent[exercise - 4].exerciseContent.codeStub);
+                expectedOutput = collection.collectionContent[1].unitContent[0].subunitContent[exercise - 4].exerciseContent.expectedOutput.split('\n');
+                break;
+            case 7:
+                io.emit('message', 'Topic: ' + collection.collectionContent[1].unitContent[1].subunitName);
+                io.emit('message', 'Let\'s look at ' + collection.collectionContent[1].unitContent[1].subunitContent[0].exerciseName + '!');
+                io.emit('message', collection.collectionContent[1].unitContent[1].subunitContent[0].exerciseContent.instructions.replace(/\n/g, '<br>'));
+                io.emit('message', 'Example:<br> <span class="code">' + collection.collectionContent[1].unitContent[1].subunitContent[0].exerciseContent.exampleCode.replace(/\n/g, '<br>') + '</span>');
+                io.emit('codeStub', collection.collectionContent[1].unitContent[1].subunitContent[0].exerciseContent.codeStub);
+                expectedOutput = collection.collectionContent[1].unitContent[1].subunitContent[0].exerciseContent.expectedOutput.split('\n');
+                break;
+        }
+    }
 
     socket.on('code', function(code) {
         createScript(code);
@@ -47,6 +116,17 @@ io.on('connection', function(socket) {
             var dictionary = pythonDict.dict;
 
             var pyshell = new PythonShell('userScripts/test.py');
+
+            var solved = false;
+
+            var outputLine = 0;
+            
+            pyshell.on('message', function(message) {
+                if (message != expectedOutput[outputLine]) {
+                    io.emit('message', 'This output is wrong. Try to implement it in a different way. You may have missed a trick here!');
+                }
+                outputLine++;
+            });
 
             pyshell.end(function(err) {
                 if (err) {
@@ -153,14 +233,21 @@ io.on('connection', function(socket) {
                         returnMessages.push('Hmm...your code isn\'t working but I\'m not sure why. ☹️');
                     }
 
+                    returnMessages.push('Go ahead and try again!');
                     io.emit('codeReview', false);
                 } else {
                     returnMessages.push('Success! Your code worked. Good job!');
                     io.emit('codeReview', true);
+                    solved = true;
                 }
 
                 for (var i = 0; i < returnMessages.length; i++) {
                     io.emit('message', returnMessages[i]);
+                }
+
+                if (solved) {
+                    exercise++;
+                    nextExercise();
                 }
             });
         }
@@ -169,6 +256,22 @@ io.on('connection', function(socket) {
             return str.split(m, i).join(m).length;
         }
     });
+
+    socket.on('disconnect', function() {
+        console.log('User Disconnected');
+    });
+});
+
+var PythonShell = require('python-shell'),
+    fs = require('fs');
+
+var pythonDict = require('./pythonDict'),
+    lev = require('./levenshtein');
+
+app.use(express.static('public'));
+
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
 });
 
 http.listen(3000, function() {

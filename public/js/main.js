@@ -1,5 +1,7 @@
 var socket = io();
 
+var latestStub;
+
 function keyEnter(e) {
     if (e.keyCode === 13) {
         sendMessage();
@@ -28,11 +30,17 @@ socket.on('codeReview', function(boolean) {
         $('.chat table').append('<tr><td class="bubble you"><img src="/assets/win' + num + '.gif" width="350px" height="auto"></td></tr>');
     } else {
         $('.chat table').append('<tr><td class="bubble you"><img src="/assets/sad' + num + '.gif" width="350px" height="auto"></td></tr>');
+        $('#codeBox').val(latestStub);
     }
     
     setTimeout(function() {
         $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
     }, 100);
+});
+
+socket.on('codeStub', function(codeStub) {
+    latestStub = codeStub;
+    $('#codeBox').val(codeStub);
 });
 
 function codeModal() {
