@@ -6,7 +6,16 @@ var express = require('express'),
 var MongoClient = require('mongodb').MongoClient,
     assert = require('assert');
 
+var request = require('request');
+
+var PythonShell = require('python-shell'),
+    fs = require('fs');
+
+var pythonDict = require('./pythonDict'),
+    lev = require('./levenshtein');
+
 var collection = {};
+var agentdb = {};
 var url = 'mongodb://localhost:27017/CodeBot';
 
 io.on('connection', function(socket) {
@@ -29,6 +38,16 @@ io.on('connection', function(socket) {
                 console.log('No document(s) found with defined "find" criteria!');
             }
         });
+        db.collection('AgentDB').find({}).toArray(function(err, result) {
+            if (err) {
+                console.log(err);
+            } else if (result.length) {
+                console.log('Found: ', result);
+                agentdb = result[0].collectionContent[0];
+            } else {
+                console.log('No document(s) found with defined "find" criteria!');
+            }
+        });
     });
 
     var exercise = 0;
@@ -38,6 +57,7 @@ io.on('connection', function(socket) {
     socket.on('message', function(msg) {
         if (startFlag && (msg == 'yes' || msg == 'Yes' || msg == 'Yeap' || msg == 'yeap')) {
             io.emit('message', 'Alright, let\'s go!');
+            startFlag = false;
 
             io.emit('message', 'Unit: <strong>' + collection.collectionContent[0].unitName + '</strong>');
             io.emit('message', 'Topic: ' + collection.collectionContent[0].unitContent[0].subunitName);
@@ -49,7 +69,57 @@ io.on('connection', function(socket) {
         } else if (startFlag) {
             io.emit('message', 'Alright, send me a "Yes" later when you\'re ready!');
         } else {
-            
+            var action = "";
+            var params = [];
+            var form = {
+                query: msg,
+                lang: 'en',
+                sessionID: '001'
+            };
+
+            request({
+                headers: {
+                    'Authorization': 'Bearer 0e022b403edd47e19d74add9e455be8a',
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache'
+                },
+                uri: 'https://api.api.ai/v1/query?v=20160627',
+                body: JSON.stringify(form),
+                method: 'POST'
+            }, function(err, res, body) {
+                action = JSON.parse(body).result.action;
+                for (var i in JSON.parse(body).result.parameters) {
+                    params.push(JSON.parse(body).result.parameters[i]);
+                }
+                console.log(action + ' ' + params);
+                findDocuments(action, params);
+            });
+        }
+
+        function findDocuments(action, params) {
+            if (action == 'define') {
+                for (var i = 0; i < agentdb.definitions.actionContent.length; i++) {
+                    if (params[0] == agentdb.definitions.actionContent[i].value) {
+                        io.emit('message', agentdb.definitions.actionContent[i].valueContent);
+                    }
+                }
+            } else if (action == "how-to") {
+                var valueContent = [];
+                if (params[0] == 'create')
+                    valueContent = agentdb.explanations.actionContent[0].valueContent;
+                else if (params[0] == 'print')
+                    valueContent = agentdb.explanations.actionContent[1].valueContent;
+                else if (params[0] == 'join')
+                    valueContent = agentdb.explanations.actionContent[2].valueContent;
+
+                for (var i = 0; i < valueContent.length; i++) {
+                    if (params[1] == valueContent[i].value) {
+                        io.emit('message', valueContent[i].valueContent);
+                    }
+                }
+            } else {
+                io.emit('message', 'I\'m sorry, I don\'t understand what you mean. I am learning too. 😜');
+            }
         }
     });
 
@@ -120,7 +190,7 @@ io.on('connection', function(socket) {
             var solved = false;
 
             var outputLine = 0;
-            
+
             pyshell.on('message', function(message) {
                 if (message != expectedOutput[outputLine]) {
                     io.emit('message', 'This output is wrong. Try to implement it in a different way. You may have missed a trick here!');
@@ -261,12 +331,6 @@ io.on('connection', function(socket) {
         console.log('User Disconnected');
     });
 });
-
-var PythonShell = require('python-shell'),
-    fs = require('fs');
-
-var pythonDict = require('./pythonDict'),
-    lev = require('./levenshtein');
 
 app.use(express.static('public'));
 

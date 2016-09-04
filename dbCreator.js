@@ -8,6 +8,10 @@ MongoClient.connect(url, function(err, db) {
     console.log("Connected successfully to server");
 
     insertCurriculum(db, function() {
+        //db.close();
+    });
+
+    insertAgentDB(db, function() {
         db.close();
     });
 });
@@ -103,7 +107,76 @@ var insertCurriculum = function(db, callback) {
         assert.equal(err, null);
         assert.equal(1, result.result.n);
         assert.equal(1, result.ops.length);
-        console.log("Inserted document into the collection.");
+        console.log("Inserted Curriculum into the collection.");
         callback(result);
     });
+}
+
+var insertAgentDB = function(db, callback) {
+    var collection = db.collection('AgentDB');
+    collection.insert({
+            collectionName: 'AgentDB',
+            collectionContent: [{
+                definitions: {
+                    action: 'define',
+                    actionContent: [{
+                        value: 'variables',
+                        valueContent: 'In computer programming, a variable or scalar is a storage location paired with an associated symbolic name (an identifier), which contains some known or unknown quantity of information referred to as a value.'
+                    }, {
+                        value: 'errors',
+                        valueContent: 'In computer programming, a logic error is a bug in a program that causes it to operate incorrectly, but not to terminate abnormally (or crash). A logic error produces unintended or undesired output or other behavior, although it may not immediately be recognized as such.'
+                    }, {
+                        value: 'data type',
+                        valueContent: 'In computer science and computer programming, a data type or simply type is a classification identifying one of various types of data, such as real, integer or Boolean, that determines the possible values for that type, the operations that can be done on values of that type, the meaning of the data, and the way values of that type can be stored.'
+                    }, {
+                        value: 'whitespace',
+                        valueContent: 'In computer science, white space is any character or series of characters that represent horizontal or vertical space in typography. When rendered, a whitespace character does not correspond to a visible mark, but typically does occupy an area on a page.'
+                    }, {
+                        value: 'comment',
+                        valueContent: 'In computer science, an integer is a datum of integral data type, a data type which represents some finite subset of the mathematical integers. Integral data types may be of different sizes and may or may not be allowed to contain negative values.'
+                    }, {
+                        value: 'string',
+                        valueContent: 'In computer science a string is any finite sequence of characters (i.e., letters, numerals, symbols and punctuation marks). An important characteristic of each string is its length, which is the number of characters in it. The length can be any natural number (i.e., zero or any positive integer).'
+                    }]
+                },
+                explanations: {
+                    action: 'how-to',
+                    actionContent: [{
+                        actionValue: 'create',
+                        valueContent: [{
+                            value: 'variables',
+                            valueContent: 'Python variables do not need explicit declaration to reserve memory space. The declaration happens automatically when you assign a value to a variable. The equal sign (=) is used to assign values to variables.'
+                        }, {
+                            value: 'comment',
+                            valueContent: 'Python has two ways to annotate Python code. One is by using comments to indicate what some part of the code does. Single-line comments begin with the hash character (#) and are terminated by the end of line. Comments spanning more than one line are achieved by inserting a multi-line string (with \\\ as the delimiter one each end) that is not used in assignment or otherwise evaluated, but sits in between other statements.'
+                        }, {
+                            value: 'string',
+                            valueContent: 'We can create strings simply by enclosing characters in quotes. Python treats single quotes the same as double quotes. Creating strings is as simple as assigning a value to a variable.'
+                        }]
+                    }, {
+                        actionValue: 'print',
+                        valueContent: [{
+                            value: 'variables',
+                            valueContent: 'Use the print() statement with the variable name in the parentheses. For example :\nprint(var_name).'
+                        }]
+                    }, {
+                        actionValue: 'join',
+                        valueContent: [{
+                            value: 'variables',
+                            valueContent: 'Use the + operator to join or concatenate two variables. IMPORTANT: The variables must be of the same data type, otherwise you might encounter a TypeError - a mismatch of types. For example:\nif an integer and a string are joined, it will lead to a TypeError.'
+                        }, {
+                            value: 'string',
+                            valueContent: 'Use the + operator to join or concatenate two strings. The result will be a string containing the second string appended to the end of the first string.'
+                        }]
+                    }]
+                }
+            }]
+        },
+        function(err, result) {
+            assert.equal(err, null);
+            assert.equal(1, result.result.n);
+            assert.equal(1, result.ops.length);
+            console.log("Inserted AgentDB into the collection.");
+            callback(result);
+        });
 }
