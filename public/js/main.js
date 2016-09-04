@@ -23,6 +23,13 @@ socket.on('message', function(msg) {
     $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
 });
 
+socket.on('gif', function(name) {
+    $('.chat table').append('<tr><td class="bubble you"><img src="/assets/hello.gif" width="250px" height="auto"></td></tr>');
+    setTimeout(function() {
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+    }, 100);
+});
+
 socket.on('codeReview', function(boolean) {
     var num = Math.floor(Math.random() * 4) + 1;
 
@@ -32,7 +39,7 @@ socket.on('codeReview', function(boolean) {
         $('.chat table').append('<tr><td class="bubble you"><img src="/assets/sad' + num + '.gif" width="350px" height="auto"></td></tr>');
         $('#codeBox').val(latestStub);
     }
-    
+
     setTimeout(function() {
         $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
     }, 100);

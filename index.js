@@ -20,6 +20,7 @@ var url = 'mongodb://localhost:27017/CodeBot';
 
 io.on('connection', function(socket) {
     console.log('User Connected');
+    io.emit('gif', 'hello');
     io.emit('message', 'Hello, world! I\'m CodeBot!');
     io.emit('message', '^ Programming joke, lol.');
     io.emit('message', 'Welcome on your first step to becoming a programmer.');
