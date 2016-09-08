@@ -1,4 +1,5 @@
-exports.dict = ['False',
+exports.dict = [
+    'False',
     'class',
     'finally',
     'is',
