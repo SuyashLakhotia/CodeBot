@@ -1,4 +1,4 @@
-exports.dict = [
+module.exports = [
     'False',
     'None',
     'True',
