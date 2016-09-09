@@ -40,6 +40,14 @@ $ brew services start mongodb    # Start MongoDB
 5. Create a directory &mdash; `/userScripts` &mdash; and an empty file named `test.py` inside to process the user's submitted Python scripts.
 6. Run CodeBot on `http://localhost:3000/` using `$ node index.js`.
 
+```
+$ npm install
+$ brew services start mongodb    # Start MongoDB (via Homebrew)
+$ node dbCreator.js
+$ mkdir userScripts && cd userScripts && touch test.py && cd ..
+$ node index.js
+```
+
 ## TODO
 
 - [ ] Clean Up & Fix Bug(s) `codeChecker.js`
