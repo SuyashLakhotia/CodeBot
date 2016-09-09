@@ -37,7 +37,8 @@ $ brew services start mongodb    # Start MongoDB
 2. Navigate to this repo on your terminal and run `$ npm install` to install all the dependencies.
 3. Start MongoDB using the instructions [here](https://docs.mongodb.com/manual/installation/).
 4. Initialize the database using `$ node dbCreator.js`.
-5. Run CodeBot on `http://localhost:3000/` using `$ node index.js`.
+5. Create a directory &mdash; `/userScripts` &mdash; and an empty file named `test.py` inside to process the user's submitted Python scripts.
+6. Run CodeBot on `http://localhost:3000/` using `$ node index.js`.
 
 ## TODO
 
