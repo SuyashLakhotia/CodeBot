@@ -49,5 +49,6 @@ $ brew services start mongodb    # Start MongoDB
 - [ ] Split `index.js` into Separate Files
 - [ ] Improve Existing Bot Replies
 - [ ] Add More Variation in Bot Replies
-- [ ] Improve In-line Code Styling
+- [ ] Make Bot Instructions for Exercises Friendlier
+- [ ] Improve In-line Code Styling for Instructions & Example Code
 - [ ] Remove Hardcoding in `nextExercise()`
