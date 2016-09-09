@@ -42,13 +42,15 @@ $ brew services start mongodb    # Start MongoDB
 
 ## TODO
 
-- [ ] Post-Hackathon Cleanup of Code & Git History
-- [x] ~~Add Setup Instructions to README~~
+- [ ] Clean Up & Fix Bug(s) `codeChecker.js`
+- [ ] Clean Up Front-End Code
 - [ ] Refine Curriculum / Database Content
-- [ ] Comment Out Debug Statements on Node Server
-- [ ] Split `index.js` into Separate Files
 - [ ] Improve Existing Bot Replies
 - [ ] Add More Variation in Bot Replies
 - [ ] Make Bot Instructions for Exercises Friendlier
 - [ ] Improve In-line Code Styling for Instructions & Example Code
-- [ ] Remove Hardcoding in `nextExercise()`
+- [x] ~~Post-Hackathon Cleanup of Code & Git History~~
+- [x] ~~Add Setup Instructions to README~~
+- [x] ~~Remove Hardcoding in `nextExercise()`~~
+- [x] ~~Split `index.js` into Separate Files~~
+- [x] ~~Redo Database Structure~~
