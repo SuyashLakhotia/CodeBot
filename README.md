@@ -48,6 +48,28 @@ $ mkdir userScripts && cd userScripts && touch test.py && cd ..
 $ node index.js
 ```
 
+## Source Code
+```
+| - modules
+|   | - codeChecker.js       // Checks User Submitted Python Code
+|   | - levenshtein.js       // Word Distance Calculator (dependency of codeChecker.js)
+|   | - messageHandler.js    // Handles User Messages over Chat
+|   | - pythonDict.js        // Dictionary of Python Keywords (dependency of codeChecker.js)
+| - node_modules             // Node.js Dependencies (see package.json)
+| - public                   // Front-End Files (served at '/')
+|   | - assets               // Images, GIFs, etc.
+|   | - css                  // CSS Stylesheets
+|   |   | - main.css
+|   | - js                   // Client-Side Scripts
+|   |   | - main.js
+|   | - favicon.ico          // Favicon
+| - userScripts              // Stores User Submitted Python Code
+|   | - test.py
+| - dbCreator.js             // Initializes Database
+| - index.html               // Client-Side Chat Interface
+| - index.js                 // Node.js Main Script
+```
+
 ## TODO
 
 - [ ] Clean Up & Fix Bug(s) `codeChecker.js`
