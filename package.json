@@ -11,7 +11,8 @@
     "url": "git+https://github.com/SuyashLakhotia/CodeBot.git"
   },
   "author": "Suyash Lakhotia",
-  "license": "ISC",
+  "contributors": ["Nikhil Venkatesh", "Chaitanya Joshi", "Bobby Ranjan"]
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/SuyashLakhotia/CodeBot/issues"
   },
