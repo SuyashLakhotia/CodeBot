@@ -8,8 +8,8 @@ var url = 'mongodb://localhost:27017/CodeBot';
 var curriculum = {};
 var agentdb = {};
 
-var codeChecker = require('./codeChecker');
-var messageHandler = require('./messageHandler');
+var codeChecker = require('./modules/codeChecker');
+var messageHandler = require('./modules/messageHandler');
 
 MongoClient.connect(url, function(err, db) {
     if (err) throw err;
