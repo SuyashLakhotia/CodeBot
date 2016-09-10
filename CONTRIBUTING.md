@@ -2,8 +2,9 @@
 
 **Coding Style**
 
-- Variable names should be in camel case.
 - 4 spaces, no tabs.
+- Variable names should be in camel case.
+- Single quotes `''` for strings &amp; characters in JavaScript.
 
 **Contributing Rules**
 
