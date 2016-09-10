@@ -95,10 +95,10 @@ io.on('connection', function(socket) {
 
     var codeParams = {
         io: io,
-        nextExercise: nextExercise,
-        expectedOutput: expectedOutput
+        nextExercise: nextExercise
     }
     socket.on('code', function(code) {
+        codeParams.expectedOutput = expectedOutput;
         codeParams.code = code;
         codeChecker.checkCode(codeParams);
     });

@@ -24,22 +24,24 @@ function checkCode(params) {
         pyFile.write(str);
     }
 
-    function testScript() {
-        var returnMessages = [];
-        var returnMessage;
-
-        var script = fs.readFileSync('userScripts/test.py');
+    function readScript(path) {
+        var script = fs.readFileSync(path);
         var scriptLines = script.toString().split('\n');
+        return scriptLines;
+    }
 
+    function testScript() {
+        var scriptLines = readScript('userScripts/test.py');
         var pyshell = new PythonShell('userScripts/test.py');
 
-        var solved = false;
+        var returnMessages = [];
+        var solved = true;
 
         var outputLine = 0;
-
         pyshell.on('message', function(message) {
-            if (message != expectedOutput[outputLine]) {
-                io.emit('message', 'This output is wrong. Try to implement it in a different way. You may have missed a trick here!');
+            if (solved && (message != expectedOutput[outputLine])) {
+                returnMessages.push('This output is wrong. Try to implement it in a different way. You may have missed a trick here!');
+                solved = false;
             }
             outputLine++;
         });
@@ -47,6 +49,7 @@ function checkCode(params) {
         pyshell.end(function(err) {
             if (err) {
                 if (err.stack.indexOf('SyntaxError') != -1) {
+                    // TODO: Process SyntaxErrors other than missing colon after 'if'.
                     returnMessages.push('You have a <strong>Syntax Error</strong> at Line ' + err.stack.substring(err.stack.indexOf('line') + 4, err.stack.indexOf('\n')) + '.');
                     returnMessages.push('You forgot the colon after <span class="code">' + err.stack.substring(err.stack.indexOf('if'), err.stack.indexOf('^')) + '</span>');
                 } else if (err.traceback) {
@@ -66,7 +69,6 @@ function checkCode(params) {
                         }
 
                         var possibleWords = [];
-
                         for (var i = 0; i < pythonDict.length; i++) {
                             if (lev.getDistance(errorDescription.substring(errorDescription.indexOf('\'') + 1, getPosition(errorDescription, '\'', 2)), pythonDict[i]) <= 1) {
                                 if (pythonDict[i].indexOf('(') != -1) {
@@ -77,65 +79,62 @@ function checkCode(params) {
                             }
                         }
 
-                        returnMessage = '';
-
+                        var suggestion = '';
                         if (possibleWords.length > 0) {
-                            returnMessage += 'Did you mean the keyword ';
+                            suggestion += 'Did you mean the keyword ';
                             for (var i = 0; i < possibleWords.length; i++) {
                                 if (i != 0) {
-                                    returnMessage += ', ';
+                                    suggestion += ', ';
                                 }
-                                returnMessage += possibleWords[i];
+                                suggestion += possibleWords[i];
                             }
-                            returnMessage += '?';
-                            returnMessages.push(returnMessage);
+                            suggestion += '?';
+                            returnMessages.push(suggestion);
                         }
                     } else if (errorType == 'IndexError') {
-                        var arrayElement = traceback[2].substring(0, traceback[2].indexOf(']') + 1);
-
                         returnMessages.push('Looks like you are trying to access a list element with an index value beyond your list. This is called an <strong>Index Error</strong>!');
-                        returnMessages.push('Anyway, all you need to do to fix this is change the index value at Line ' + lineNumber + '&mdash; <span class="code">' + traceback[2] + '</span> &mdash; to something lesser.');
+                        returnMessages.push('Anyway, all you need to do to fix this is change the index value at Line ' + lineNumber + ' &mdash; <span class="code">' + traceback[2] + '</span> &mdash; to something lesser.');
                     } else if (errorType == 'TypeError') {
                         returnMessages.push('Looks like you need to refresh your concepts about data types.');
-                        returnMessages.push('You seem to have a <strong>Type Error</strong> at Line ' + lineNumber + ' &mdash; ' + traceback[2]);
+                        returnMessages.push('You seem to have a <strong>Type Error</strong> at Line ' + lineNumber + ' &mdash; <span class="code">' + traceback[2] + '</span>');
 
                         var op = errorDescription.substring(errorDescription.indexOf(':') - 1, errorDescription.indexOf(':'));
 
                         var datatypes = [];
-                        if (errorDescription.indexOf('int') > -1)
+                        if (errorDescription.indexOf('int') != -1)
                             datatypes.push('int');
-                        if (errorDescription.indexOf('long') > -1)
+                        if (errorDescription.indexOf('long') != -1)
                             datatypes.push('long');
-                        if (errorDescription.indexOf('str') > -1)
+                        if (errorDescription.indexOf('str') != -1)
                             datatypes.push('string');
-                        if (errorDescription.indexOf('double') > -1)
+                        if (errorDescription.indexOf('double') != -1)
                             datatypes.push('double');
-                        if (errorDescription.indexOf('bool') > -1)
+                        if (errorDescription.indexOf('bool') != -1)
                             datatypes.push('bool');
 
                         if (datatypes.length > 1) {
-                            if (errorDescription.indexOf('concatenate') > -1)
+                            if (errorDescription.indexOf('concatenate') != -1)
                                 returnMessages.push(datatypes[0] + ' &amp; ' + datatypes[1] + ' types cannot be concatenated.');
-                            else if (errorDescription.indexOf('convert') > -1)
+                            else if (errorDescription.indexOf('convert') != -1)
                                 returnMessages.push(datatypes[0] + ' &amp; ' + datatypes[1] + ' cannot be implicity converted. Please use <span class="code">' + datatypes[0] + '()</span>.');
                             else
-                                returnMessages.push('For this operation, <strong>' + op + '</strong>, your datatypes,' + datatypes[0] + ' and ' + datatypes[1] + ' are incompatible.');
+                                returnMessages.push('For this operation, <span class="code">' + op + '</span>, your datatypes,' + datatypes[0] + ' and ' + datatypes[1] + ' are incompatible.');
                         } else if (datatypes.length == 1) {
-                            if (errorDescription.indexOf('__getitem__') > -1)
+                            if (errorDescription.indexOf('__getitem__') != -1)
                                 returnMessages.push('You are trying to get a value from a ' + datatypes[0] + ' variable.');
                             else
-                                returnMessages.push(datatypes[0] + ' types cannot be used with this function since it\'s incompatible.');
+                                returnMessages.push(datatypes[0] + ' types are incompatible with this function.');
                         }
                     } else if (errorType == 'ValueError') {
                         returnMessages.push('Looks like you need to refresh your concepts about values.');
-                        returnMessages.push('You seem to have a <strong>Value Error</strong> at Line ' + lineNumber + ' &mdash; ' + traceback[2]);
+                        returnMessages.push('You seem to have a <strong>Value Error</strong> at Line ' + lineNumber + ' &mdash; <span class="code">' + traceback[2] + '</span>');
 
                         var datatypes = [];
-                        if (errorDescription.indexOf('int') > -1)
+                        if (errorDescription.indexOf('int') != -1)
                             datatypes.push('int');
-                        if (errorDescription.indexOf('long') > -1)
+                        if (errorDescription.indexOf('long') != -1)
                             datatypes.push('long');
-                        if (errorDescription.indexOf('float') > -1)
+                        if (errorDescription.indexOf('float') != -1)
                             datatypes.push('float');
 
                         if (datatypes.length == 1) {
@@ -150,21 +149,27 @@ function checkCode(params) {
                 }
 
                 returnMessages.push('Go ahead and try again!');
+
                 io.emit('codeReview', false);
-            } else {
+                sendMessages(returnMessages);
+            } else if (solved) {
                 returnMessages.push('Success! Your code worked. Good job!');
+
                 io.emit('codeReview', true);
-                solved = true;
-            }
+                sendMessages(returnMessages);
 
-            for (var i = 0; i < returnMessages.length; i++) {
-                io.emit('message', returnMessages[i]);
-            }
-
-            if (solved) {
                 nextExercise();
+            } else {
+                io.emit('codeReview', false);
+                sendMessages(returnMessages)
             }
         });
+    }
+
+    function sendMessages(messages) {
+        for (var i = 0; i < messages.length; i++) {
+            io.emit('message', messages[i]);
+        }
     }
 
     function getPosition(str, m, i) {
