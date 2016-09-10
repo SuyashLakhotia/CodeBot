@@ -8,6 +8,7 @@
 body {
     background-color: #f8f8f8;
     -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 400;
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/assets/bg.png');
@@ -148,6 +149,132 @@ body {
     background-color: #212121;
 }
 
+.code {
+    font-family: 'Cutive Mono', 'Courier New', 'Courier', sans-serif;
+    font-size: 16px;
+    background-color: #212121 !important;
+    color: #fff !important;
+}
+
+span.code {
+    background-color: #eceff1 !important;
+    color: #000 !important;
+    padding: 2px;
+}
+
+.write {
+    position: absolute;
+    bottom: 8px;
+    left: 30px;
+    height: 35px;
+    padding-left: 8px;
+    border: 1px solid #e6e6e6;
+    background-color: #eceff1;
+    width: calc(100% - 58px);
+    border-radius: 5px;
+}
+
+.write input {
+    font-size: 16px;
+    float: left;
+    width: 91%;
+    height: 34px;
+    padding: 0 10px;
+    color: #1a1a1a;
+    border: 0;
+    outline: none;
+    background-color: #eceff1;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+}
+
+.write .write-link.send-icon:before {
+    display: inline-block;
+    float: left;
+    width: 20px;
+    height: 32px;
+    margin-left: 11px;
+    content: '';
+    background-image: url('/assets/send.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.write .write-link.code-icon {
+    font-size: 20px;
+    display: inline-block;
+    float: left;
+    width: 20px;
+    line-height: 32px;
+    margin-left: 11px;
+    text-decoration: none;
+    color: #555;
+}
+
+/******************************** Coding Modal ********************************/
+
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px 30px 50px 30px;
+    border: 1px solid #888;
+    width: 70%;
+}
+
+.modal textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.modal .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal .button {
+    float: right;
+    width: 10%;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+}
+
+.modal #closeBtn {
+    background-color: #d9534f;
+}
+
+.modal #submitBtn {
+    background-color: #5cb85c;
+    margin-left: 20px;
+}
+
+/*************************** Chat Bubble Animations ***************************/
+
 .bubble {
     -webkit-transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
     transition-timing-function: cubic-bezier(0.4, -0.04, 1, 1);
@@ -245,126 +372,4 @@ body {
         margin-right: 0;
         opacity: 1;
     }
-}
-
-.code {
-    font-family: 'Cutive Mono', 'Courier New', 'Courier', sans-serif;
-    font-size: 16px;
-    background-color: #212121 !important;
-    color: #fff !important;
-}
-
-span.code {
-    background-color: #eceff1 !important;
-    color: #000 !important;
-    padding: 2px;
-}
-
-.write {
-    position: absolute;
-    bottom: 8px;
-    left: 30px;
-    height: 35px;
-    padding-left: 8px;
-    border: 1px solid #e6e6e6;
-    background-color: #eceff1;
-    width: calc(100% - 58px);
-    border-radius: 5px;
-}
-
-.write input {
-    font-size: 16px;
-    float: left;
-    width: 91%;
-    height: 34px;
-    padding: 0 10px;
-    color: #1a1a1a;
-    border: 0;
-    outline: none;
-    background-color: #eceff1;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 400;
-}
-
-.write .write-link.send-icon:before {
-    display: inline-block;
-    float: left;
-    width: 20px;
-    height: 32px;
-    margin-left: 11px;
-    content: '';
-    background-image: url('/assets/send.png');
-    background-repeat: no-repeat;
-    background-position: center;
-}
-
-.write .write-link.code-icon {
-    font-size: 20px;
-    display: inline-block;
-    float: left;
-    width: 20px;
-    line-height: 32px;
-    margin-left: 11px;
-    text-decoration: none;
-    color: #555;
-}
-
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-
-.modal .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px 30px 50px 30px;
-    border: 1px solid #888;
-    width: 70%;
-}
-
-.modal textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    resize: vertical;
-}
-
-.modal .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.modal .close:hover,
-.modal .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal .button {
-    float: right;
-    width: 10%;
-    text-align: center;
-    padding: 5px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    color: white;
-    text-decoration: none;
-}
-
-.modal #closeBtn {
-    background-color: #d9534f;
-}
-
-.modal #submitBtn {
-    background-color: #5cb85c;
-    margin-left: 20px;
 }

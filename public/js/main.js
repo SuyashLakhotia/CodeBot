@@ -1,22 +1,5 @@
 var socket = io();
-
 var latestStub;
-
-function keyEnter(e) {
-    if (e.keyCode === 13) {
-        sendMessage();
-    }
-}
-
-function sendMessage() {
-    if ($('#messageBox').val() != '') {
-        socket.emit('message', $('#messageBox').val());
-        var html = '<tr><td class="bubble me">' + $('#messageBox').val() + '</td></tr>';
-        $('.chat table').append(html);
-        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
-        $('#messageBox').val('');
-    }
-};
 
 socket.on('message', function(msg) {
     $('.chat table').append('<tr><td class="bubble you">' + msg + '</td></tr>');
@@ -30,10 +13,10 @@ socket.on('gif', function(name) {
     }, 100);
 });
 
-socket.on('codeReview', function(boolean) {
+socket.on('codeReview', function(flag) {
     var num = Math.floor(Math.random() * 4) + 1;
 
-    if (boolean) {
+    if (flag) {
         $('.chat table').append('<tr><td class="bubble you"><img src="/assets/win' + num + '.gif" width="350px" height="auto"></td></tr>');
     } else {
         $('.chat table').append('<tr><td class="bubble you"><img src="/assets/sad' + num + '.gif" width="350px" height="auto"></td></tr>');
@@ -49,6 +32,15 @@ socket.on('codeStub', function(codeStub) {
     latestStub = codeStub;
     $('#codeBox').val(codeStub);
 });
+
+function sendMessage() {
+    if ($('#messageBox').val() != '') {
+        socket.emit('message', $('#messageBox').val());
+        $('.chat table').append('<tr><td class="bubble me">' + $('#messageBox').val() + '</td></tr>');
+        $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+        $('#messageBox').val('');
+    }
+}
 
 function codeModal() {
     var modal = document.getElementById('codeModal');
@@ -83,6 +75,12 @@ $(document).ready(function() {
     $('.conversation-start span').html(new Date);
 
     $('#chatBox').scrollTop($('#chatBox')[0].scrollHeight);
+
+    $('#messageBox').on('keydown', function(e) {
+        if (e.keyCode === 13) {
+            sendMessage();
+        }
+    });
 
     $('#codeBox').on('keydown', function(e) {
         if (e.keyCode === 9) {
