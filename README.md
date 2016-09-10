@@ -70,13 +70,14 @@ $ node index.js
 
 ## TODO
 
+- [ ] All Python Errors → Human-Readable Errors
 - [ ] Clean Up `codeChecker.js`
-- [ ] Clean Up Front-End Code
 - [ ] Refine Curriculum / Database Content
 - [ ] Improve Existing Bot Replies
 - [ ] Add More Variation in Bot Replies
 - [ ] Make Bot Instructions for Exercises Friendlier
 - [ ] Improve In-line Code Styling for Instructions & Example Code
+- [x] ~~Clean Up Front-End Code~~
 - [x] ~~Post-Hackathon Cleanup of Code & Git History~~
 - [x] ~~Add Setup Instructions to README~~
 - [x] ~~Remove Hardcoding in `nextExercise()`~~
