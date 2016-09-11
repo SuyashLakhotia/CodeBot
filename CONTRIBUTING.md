@@ -1,8 +1,13 @@
 ## Contributing Guidelines
 
+**Editor Config**
+
+- This project uses [EditorConfig](http://editorconfig.org/) to maintain consistent coding styles.
+- The styles for this project are defined in [`.editorconfig`](.editorconfig).
+- Download the plugin for your preferred text editor [here](http://editorconfig.org/#download).
+
 **Coding Style**
 
-- 4 spaces, no tabs.
 - Variable names should be in camel case.
 - Single quotes `''` for strings &amp; characters in JavaScript.
 

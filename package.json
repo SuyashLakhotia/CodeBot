@@ -1,27 +1,27 @@
 {
-  "name": "codebot",
-  "version": "1.0.0",
-  "description": "A chatbot to help beginners learn code.",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SuyashLakhotia/CodeBot.git"
-  },
-  "author": "Suyash Lakhotia",
-  "contributors": ["Nikhil Venkatesh", "Chaitanya Joshi", "Bobby Ranjan"]
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SuyashLakhotia/CodeBot/issues"
-  },
-  "homepage": "https://github.com/SuyashLakhotia/CodeBot#readme",
-  "dependencies": {
-    "express": "^4.14.0",
-    "mongodb": "^2.2.9",
-    "python-shell": "^0.4.0",
-    "request": "^2.74.0",
-    "socket.io": "^1.4.8"
-  }
+    "name": "codebot",
+    "version": "1.0.0",
+    "description": "A chatbot to help beginners learn code.",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SuyashLakhotia/CodeBot.git"
+    },
+    "author": "Suyash Lakhotia",
+    "contributors": ["Nikhil Venkatesh", "Chaitanya Joshi", "Bobby Ranjan"],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/SuyashLakhotia/CodeBot/issues"
+    },
+    "homepage": "https://github.com/SuyashLakhotia/CodeBot#readme",
+    "dependencies": {
+        "express": "^4.14.0",
+        "mongodb": "^2.2.9",
+        "python-shell": "^0.4.0",
+        "request": "^2.74.0",
+        "socket.io": "^1.4.8"
+    }
 }
