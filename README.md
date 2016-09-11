@@ -1,8 +1,8 @@
 # CodeBot
 
-CodeBot is a chatbot that helps beginners learn how to code. To make the otherwise daunting task of learning how to code for the first time easier, CodeBot incorporates witty replies, GIFs &amp; human-readable errors to create an incredibly fun experience for a complete novice. Currently, it goes through a few basic exercises in Python (adapted from [Codecademy](https://www.codecademy.com/learn/python)) while answering any questions on the way. The back-end runs on Node.js, MongoDB & [api.ai](https://api.ai) while the front-end is written in vanilla HTML, CSS & JavaScript. The initial prototype for CodeBot was built during the Facebook Singapore Hackathon 2016.
+CodeBot is a chatbot that helps beginners learn how to code. To make the otherwise daunting task of learning how to code for the first time easier, CodeBot incorporates witty replies, GIFs & human-readable errors to create an incredibly fun experience for a complete novice. Currently, it goes through a few elementary exercises in Python (adapted from [Codecademy](https://www.codecademy.com/learn/python)) while answering user questions using basic NLP. The back-end runs on Node.js, MongoDB & [api.ai](https://api.ai) while the front-end is written in vanilla HTML, CSS & JavaScript.
 
-![Screenshot of CodeBot](/z-Screenshots/1.png)
+![Screenshot of CodeBot](z-Screenshots/1.png)
 
 ### Team
 
@@ -48,38 +48,29 @@ $ node index.js
 
 ## Source Code
 ```
-| - modules
-|   | - codeChecker.js       // Checks User Submitted Python Code
-|   | - levenshtein.js       // Word Distance Calculator (dependency of codeChecker.js)
-|   | - messageHandler.js    // Handles User Messages over Chat
-|   | - pythonDict.js        // Dictionary of Python Keywords (dependency of codeChecker.js)
-| - node_modules             // Node.js Dependencies (see package.json)
-| - public                   // Front-End Files (served at '/')
-|   | - assets               // Images, GIFs, etc.
-|   | - css                  // CSS Stylesheets
-|   |   | - main.css
-|   | - js                   // Client-Side Scripts
-|   |   | - main.js
-|   | - favicon.ico          // Favicon
-| - userScripts              // Stores User Submitted Python Code
-|   | - test.py
-| - dbCreator.js             // Initializes Database
-| - index.html               // Client-Side Chat Interface
-| - index.js                 // Node.js Main Script
+CodeBot/
+├── modules/
+│   ├── codeChecker.js       // Checks User Submitted Python Code
+│   ├── levenshtein.js       // Word Distance Calculator (dependency of codeChecker.js)
+│   ├── messageHandler.js    // Handles User Messages over Chat
+│   └── pythonDict.js        // Dictionary of Python Keywords (dependency of codeChecker.js)
+├── node_modules/            // Node.js Dependencies (see package.json)
+├── public/                  // Front-End Files (served at '/')
+│   ├── assets/              // Images, GIFs, etc.
+│   ├── css/                 // CSS Stylesheets
+│   │   └── main.css
+│   ├── js/                  // Client-Side Scripts
+│   │   └── main.js
+│   └── favicon.ico          // Favicon
+├── userScripts/             // User Submitted Python Code
+│   └── test.py
+├── dbCreator.js             // Initializes Database
+├── index.html               // Client-Side Chat Interface
+└── index.js                 // Node.js Entry Point
 ```
 
-## TODO
+See contributing guidelines [here](CONTRIBUTING.md).
 
-- [ ] All Python Errors → Human-Readable Errors
-- [ ] Refine Curriculum / Database Content
-- [ ] Improve Existing Bot Replies
-- [ ] Add More Variation in Bot Replies
-- [ ] Make Bot Instructions for Exercises Friendlier
-- [ ] Improve In-line Code Styling for Instructions & Example Code
-- [x] ~~Clean Up `codeChecker.js`~~
-- [x] ~~Clean Up Front-End Code~~
-- [x] ~~Post-Hackathon Cleanup of Code & Git History~~
-- [x] ~~Add Setup Instructions to README~~
-- [x] ~~Remove Hardcoding in `nextExercise()`~~
-- [x] ~~Split `index.js` into Separate Files~~
-- [x] ~~Redo Database Structure~~
+---
+
+> **NOTE:** Initially built for and during the Facebook Singapore Hackathon 2016.
